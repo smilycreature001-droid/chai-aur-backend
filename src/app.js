@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import userRouter from "./routes/user.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,17 +22,7 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(cookieParser());
 
-
-//routes
-
-import userRouter from "./routes/user.routes.js"
-
-
-//routes declaration
-
+// routes
 app.use("/api/v1/users", userRouter);
-
-// http://localhost:8000/api/v1/users/register
-// http://localhost:8000/api/v1/users/login
 
 export { app };
