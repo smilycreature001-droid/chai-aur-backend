@@ -25,4 +25,17 @@ app.use(cookieParser());
 // routes
 app.use("/api/v1/users", userRouter);
 
+// global error handler — catches all ApiError throws
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    return res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message,
+        errors: err.errors || [],
+    });
+});
+
 export { app };
