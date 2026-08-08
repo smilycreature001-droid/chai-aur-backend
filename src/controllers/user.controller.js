@@ -27,9 +27,16 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User with email or username already exists");
     }
 
+     console.log(req.files);  
+
     // check for images, check for avatar
     const avatarLocalPath = req.files?.avatar?.[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+    //const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+
+    let coverImageLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.fies.coverImage.length>0){
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required");
@@ -44,14 +51,22 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // create user object - create entry in db
-    const user = await User.create({
-        fullname,
-        avatar: avatar.url,
-        coverImage: coverImage?.url || "",
-        email,
-        password,
-        username: username.toLowerCase(),
-    });
+    console.log("Creating user...");
+    let user;
+    try {
+        user = await User.create({
+            fullname,
+            avatar: avatar.url,
+            coverImage: coverImage?.url || "",
+            email,
+            password,
+            username: username.toLowerCase(),
+        });
+        console.log("User created:", user._id);
+    } catch (createError) {
+        console.log("User.create error:", createError.message);
+        throw new ApiError(500, createError.message);
+    }
 
     // remove password and refresh token field from response
     const createdUser = await User.findById(user._id).select(

@@ -1,0 +1,8 @@
+name: chai-code
+values:
+  - key: server
+    value: ''
+  - key: ''
+    value: ''
+    disabled: true
+color: 0

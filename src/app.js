@@ -25,8 +25,9 @@ app.use(cookieParser());
 // routes
 app.use("/api/v1/users", userRouter);
 
-// global error handler — catches all ApiError throws
-app.use((err, req, res, next) => {
+// global error handler — must have exactly 4 params for Express to treat it as error handler
+// eslint-disable-next-line no-unused-vars
+app.use(function (err, req, res, next) {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
