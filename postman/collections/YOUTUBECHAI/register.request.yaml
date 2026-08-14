@@ -1,6 +1,6 @@
 $kind: http-request
 name: register
-url: "{{server}}{/v1/users/register"
+url: http://localhost:8000/api/v1/users/register
 method: POST
 body:
   type: formdata
@@ -30,6 +30,11 @@ body:
       key: coverImage
       src:
         - postman-cloud:///1f19265d-1d6e-4630-aa03-ebc6e6fbc0e6
+      description: ""
+      disabled: false
+    - type: text
+      key: username
+      value: one123
       description: ""
       disabled: false
 order: 1894340627524107
