@@ -354,7 +354,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
 
    }
 
-   await User.findById(
+ const user =  await User.findById(
     req.res?._id,
 
     {
@@ -366,6 +366,12 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     {new:true}
 
    ).select("-password")
+
+   return res
+   .status(200)
+   .json(
+    new ApiError(200,user,"Avatar Image Updated Sucessfully")
+   )
 
 })
 const UpdateUserCoverImage = asyncHandler(async(req,res)=>{
@@ -379,23 +385,29 @@ const UpdateUserCoverImage = asyncHandler(async(req,res)=>{
    const avcoverImage = await uploadOnCloudinary
    (coverImageLocalPath)
 
-   if(!avatar.url){
-    throw new ApiError(400, "Error While Uploading on avatar")
+   if(!coverImage.url){
+    throw new ApiError(400, "error while uploading the")
 
    }
 
-   await User.findById(
+  const user = await User.findById(
     req.res?._id,
 
     {
         $set:{
-            avatar:avatar.url
+            coverImage:coverImage.url
         }
     },
 
     {new:true}
 
    ).select("-password")
+
+   return res
+   .status(200)
+   .json(
+    new ApiError(200,user,"coverimage Updated Sucessfully")
+   )
 
 })
 
@@ -411,4 +423,6 @@ export {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
+    UpdateUserCoverImage,
+
 };
